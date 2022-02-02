@@ -1,15 +1,15 @@
 var app = app || {};
 
-$(function () {
-  app.models.SidebarViewModel = Backbone.Model.extend({
-    defaults: {
-      username: window.username || "K",
-      heading: "insert_heading",
-      add_image: true,
-      icon: "Chat Room.png",
-    },
-    initialize: function () {
-      console.log("Sidebar Model init", this.get("username"));
+app.models.SidebarViewModel = Backbone.Model.extend({
+  defaults: {
+    username: app.globals.username || "",
+  },
+  initialize: function () {
+    console.log("Sidebar Model init", app.globals.username);
+    this.on("change:username",function(){
+      console.log("username changed to",this.get("username"))
+    })
+    if(app.globals.is_authenticated){
       new app.views.UsernameView({
         el: $("#username"),
         model: this,
@@ -25,9 +25,12 @@ $(function () {
         el: $("#assign-task-button"),
         model: this,
       });
-    },
-    setHeading: function (heading) {
-      this.set("heading", heading);
-    },
-  });
+    }
+    else{
+      new app.models.LoginViewModel()
+    }
+  },
+  setHeading: function (heading) {
+    this.set("heading", heading);
+  },
 });

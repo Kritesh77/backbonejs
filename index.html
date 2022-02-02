@@ -185,33 +185,32 @@
       <div class="bg-white px-10 py-8 z-10">
         <h1 class="text-3xl">Login</h1>
         <div class="mt-8">
-          <input type="text" name="email" class="border outline-none px-2 py-3 rounded-md" placeholder="Email">
-          <input type="password"name="password" class="border outline-none px-2 py-3 mt-2 rounded-md"  placeholder="Password">
-          <input type="button" id="login-button" class=" p-3 bg-red-500 text-white font-bold mt-4 hover:bg-green-700 cursor-pointer" value="Submit">
+          <form id="login-form">
+            <input type="text" name="email" class="border outline-none px-2 py-3 rounded-md" placeholder="Email"/>
+            <input type="password"name="password" class="border outline-none px-2 py-3 mt-2 rounded-md"  placeholder="Password"/>
+            <input type="button"  class="p-3 bg-red-500 text-white font-bold mt-4 hover:bg-green-700 cursor-pointer" value="Submit"/>
+          </form>
         </div>
       </div>
-
-
       </div>
     </script>
-    <script>
-      console.log("script imported")
-      window.is_authenticated = false;
-    </script>
     <script src="js/globals.js"></script>
-
-    <script src="js/functions.js"></script>
+  
+    <script src="js/functions/fn.js"></script>
 
     <script src="js/models/login.js"></script>
     <script src="js/models/sidebar.js"></script>
     <script src="js/models/mainwrap.js"></script>
+
     <script src="js/views/login.js"></script>
     <script src="js/views/sidebar.js"></script>
     <script src="js/views/chats.js"></script>
     <script src="js/views/friends.js"></script>
     <script src="js/views/taskItem.js"></script>
     <script src="js/views/tasks.js"></script>
+
     <script src="js/main.js"></script>
+
     <script src="js/routers/router.js"></script>
   </body>
 </html>

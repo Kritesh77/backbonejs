@@ -22,7 +22,7 @@ var app = app || {};
       "click h1": "navigate",
     },
     navigate: function () {
-      app.CounterRouter.navigate("/tasks", { trigger: true });
+      app.router.MainRouter.navigate("/tasks", { trigger: true });
     },
     initialize: function () {
       console.log("TaskButton View Init");
@@ -41,7 +41,7 @@ var app = app || {};
       "click h1": "navigate",
     },
     navigate: function () {
-      app.CounterRouter.navigate("/chats/" + 123, { trigger: true });
+      app.router.MainRouter.navigate("/chats/" + 123, { trigger: true });
     },
     initialize: function () {
       console.log("TaskButton View Init");
@@ -63,7 +63,7 @@ var app = app || {};
       "click h1": "navigate",
     },
     navigate: function () {
-      app.CounterRouter.navigate("/friends", { trigger: true });
+      app.router.MainRouter.navigate("/friends", { trigger: true });
     },
     initialize: function () {
       console.log("TaskButton View Init");
@@ -80,13 +80,16 @@ var app = app || {};
   app.views.AssignTaskView = Backbone.View.extend({
     template: _.template($("#sidebar-assign-task-button").html()),
     events: {
-      "click .increment": "incrementCounter",
+      "click .add-task": "addTask",
     },
 
     initialize: function () {
       console.log("TaskButton View Init");
       // this.model.on("change", this.render, this);
       this.render();
+    },
+    addTask:function(){
+
     },
     render: function () {
       console.log(this.model.toJSON());
