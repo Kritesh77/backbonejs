@@ -5,21 +5,213 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BackboneJs</title>
+    <link rel="stylesheet" href="./css/style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
+    <div
+      id="login-container"
+      class="absolute flex justify-center items-center w-screen h-screen"
+    ></div>
     <!-- <h1 class="p-4">BackbokeJs</h1> -->
-    <header id="header"></header>
+    <div class="flex h-screen overflow-hidden">
+      <div
+        class="w-1/4 bg-white px-4 py-8 flex flex-col drop-shadow-lg"
+        id="sidebar"
+      >
+        <div class="">
+          <h1 class="text-4xl font-bold">Orgzit</h1>
+          <div class="mt-12">
+            <div class="logged-in-sidebar">
+              <h1 class="font-light text-sm text-gray-500">Welcome,</h1>
+              <h1 class="text-lg font-bold" id="username"></h1>
+            </div>
+            <div class="login-sidebar"></div>
+          </div>
+        </div>
+        <div class="flex-1 mt-12">
+          <div id="task-button"></div>
+          <div id="friends-button"></div>
+          <div id="chat-button"></div>
+        </div>
+        <div>
+          <div id="assign-task-button"></div>
+        </div>
+      </div>
+      <div class="flex-1 bg-gray-200 flex" id="mainwrap-container"></div>
+    </div>
+
     <script src="./js/vendor/jquery.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.2/underscore-umd-min.js"></script>
     <script src="./js/vendor/backbone.js"></script>
 
-    <script
-      src="./js/views/Header.js"
-      type="text/template"
-      id="header-template"
-    ></script>
+    <script type="text/template" id="username">
+      <% if(isLoggedIn()) { %>
+        <h1><%= username %></h1>
+        <% } else{%>
+          <button id="login-redirect" class="rounded-lg px-4 py-2 bg-red-500 text-white">Login</button>
+          <% } %>
+    </script>
 
-    <script src="./js/App.js"></script>
+    <script type="text/template" id="sidebar-task-button">
+      <div class="rounded-xl bg-orange-100 px-4 py-3 flex justify-between hover:shadow-lg">
+        <img src="./images/Tasks.png" width="24px" />
+          <h1 class="font-bold text-orange-600 flex-1 ml-3 cursor-pointer">
+           Tasks
+          </h1>
+      </div>
+    </script>
+    <script type="text/template" id="sidebar-chat-button">
+      <div class="rounded-xl bg-gray-100 px-4 py-3 flex justify-between mt-4 hover:shadow-lg">
+        <img src="./images/Chat Room.png" width="24px" />
+          <h1 class="font-bold text-gray-600 flex-1 ml-3 cursor-pointer">
+            Chats
+          </h1>
+      </div>
+    </script>
+    <script type="text/template" id="sidebar-friend-button">
+      <div class="rounded-xl bg-gray-100 px-4 py-3 flex justify-between mt-4 hover:shadow-lg">
+        <img src="./images/Friend.png" width="24px" />
+          <h1 class="font-bold text-gray-600 flex-1 ml-3 cursor-pointer">
+            Friends
+          </h1>
+        <img src="./images/PlusGray.png" width="24px" class="cursor-pointer" />
+      </div>
+    </script>
+    <script type="text/template" id="sidebar-assign-task-button">
+          <div
+        class="bg-red-300 px-4 py-3 rounded-xl flex hover:bg-red-500 cursor-pointer items-center"
+      >
+        <img src="./images/Add New.png" />
+        <h1 class="text-white font-bold ml-3">Assign a task</h1>
+      </div>
+    </script>
+
+    <script type="text/template" id="task-container-template">
+      <div
+        class="flex-1 bg-slate-100/70 px-8 py-6 flex flex-col h-full"
+
+      >
+        <div class="flex justify-between text-lg">
+          <h1>&#8592; Chats</h1>
+          <h1 class="text-xl font-bold underline text-orange-500 ">
+            Today
+          </h1>
+          <h1>Next week &#8594;</h1>
+        </div>
+        <div class="flex-1 mt-16">
+          <h1 class="text-2xl font-bold text-gray-800">Tasks</h1>
+         <div id="task-item-container"></div>
+        </div>
+      </div>
+    </script>
+    <script type="text/template" id="task-list-template">
+      <div class="mb-4">
+        <div class="flex justify-between items-center text-xs text-gray-600">
+          <h1>{data.dueDate}</h1>
+          <div class="flex items-center">
+            <h1>Assigned by </h1>
+            <img
+              src="./images/Ellipse 2.png"
+              alt="user"
+              width="24px"
+              class="ml-2"
+            />
+          </div>
+        </div>
+        <div class="flex rounded-lg bg-white overflow-hidden mt-1">
+          <div class="priority-red"></div>
+          <div class="flex-1 px-2 self-center">
+            <div class="flex items-baseline">
+              <input type="checkbox" name="" id="" />
+              <h1 class=" ml-2">{data.title}</h1>
+            </div>
+            <div class="flex">
+              <div class="flex text-red-500">
+                <div class="self-center mr-1">
+                  <img src="./images/Tags.png" alt="" />
+                </div>
+
+                  <h1>x</h1>
+                  <h1>y</h1>
+                  <h1>z</h1>
+
+              </div>
+              <div class="flex text-gray-400 ml-4">
+                <div class="self-center mr-1">
+                  <img src="./images/Link.png" alt="" />
+                </div>
+
+                  <a href="www.orgzit.com" key={i}>
+                    www.orgzit.com
+                  </a>
+
+              </div>
+            </div>
+          </div>
+          <div class=" px-4 py-6 opacity-50 cursor-pointer">
+              <img src="./images/Chat Room.png" alt="" />
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="chat-container-template">
+      <div
+        class="flex-1 bg-slate-100/70 px-8 py-6 flex flex-col h-full"
+      >
+        <div class="flex-1 mt-16">
+          <h1 class="text-2xl font-bold text-gray-800">Chat</h1>
+         <div id="friend-item-container"></div>
+        </div>
+      </div>
+    </script>
+    <script type="text/template" id="friends-container-template">
+      <div
+        class="flex-1 bg-slate-100/70 px-8 py-6 flex flex-col h-full"
+
+      >
+        <div class="flex-1 mt-16">
+          <h1 class="text-2xl font-bold text-gray-800">Friends</h1>
+         <div id="friend-item-container"></div>
+        </div>
+      </div>
+    </script>
+    <script type="text/template" id="login-view">
+      <div
+        class="flex items-center justify-center z-10 "
+      >
+      <div class="bg-gray-700/30 h-screen w-screen overflow-hidden absolute top-0 left-0"></div>
+      <div class="bg-white px-10 py-8 z-10">
+        <h1 class="text-3xl">Login</h1>
+        <div class="mt-8">
+          <input type="text" name="email" class="border outline-none px-2 py-3 rounded-md" placeholder="Email">
+          <input type="password"name="password" class="border outline-none px-2 py-3 mt-2 rounded-md"  placeholder="Password">
+          <input type="button" id="login-button" class=" p-3 bg-red-500 text-white font-bold mt-4 hover:bg-green-700 cursor-pointer" value="Submit">
+        </div>
+      </div>
+
+
+      </div>
+    </script>
+    <script>
+      console.log("script imported")
+      window.is_authenticated = false;
+    </script>
+    <script src="js/globals.js"></script>
+
+    <script src="js/functions.js"></script>
+
+    <script src="js/models/login.js"></script>
+    <script src="js/models/sidebar.js"></script>
+    <script src="js/models/mainwrap.js"></script>
+    <script src="js/views/login.js"></script>
+    <script src="js/views/sidebar.js"></script>
+    <script src="js/views/chats.js"></script>
+    <script src="js/views/friends.js"></script>
+    <script src="js/views/taskItem.js"></script>
+    <script src="js/views/tasks.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/routers/router.js"></script>
   </body>
 </html>

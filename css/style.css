@@ -1,0 +1,21 @@
+body {
+  font-family: "Roboto Mono", monospace;
+}
+* {
+  transition: all 0.2s ease;
+}
+
+.priority-red {
+  width: 7rem;
+  background-color: rgba(239, 68, 68, 0.781);
+}
+
+.priority-orange {
+  width: 7rem;
+  background-color: #ff88009d;
+}
+
+.priority-green {
+  width: 7rem;
+  background-color: #44ff0065;
+}
