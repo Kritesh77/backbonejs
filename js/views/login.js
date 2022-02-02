@@ -2,26 +2,23 @@ var app = app || {};
 
 app.views.LoginView = Backbone.View.extend({
   template: _.template($("#login-view").html()),
-
   events: {
-    "click #login-form": "startLogin",
+    "click #login-submit": "startLogin",
   },
   initialize: function () {
-    // console.log("Login View Init", this);
-    const self = this
-    console.log("HELLO",this.model.get("token"))
-    this.model.on(
-      "change",
-      function () {
-        if (self.model.get("is_authenticated")) {
-          debugger;
-          console.log("MODEL AUTHENTICAETED CHANGED")
-          // self.remove();
-          app.sideBarview.render()
-          // new app.models.SidebarViewModel();
-        }
-      },
-    );
+    const self = this;
+    console.log("Login View Init");
+    self.model.on("change",function(){
+      if(
+        self.model.get("is_authenticated") &&
+        self.model.get("username")&&
+        self.model.get("token")
+      ){
+         console.log("is_authenticated CHANGES",self.model.get("token"));
+          //redirect to home and rerender it
+          app.fn.redirectToHome()
+      }
+    })
     this.render();
   },
   render: function () {

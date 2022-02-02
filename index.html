@@ -9,10 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <div
-      id="login-container"
-      class="absolute flex justify-center items-center w-screen h-screen"
-    ></div>
+    
     <!-- <h1 class="p-4">BackbokeJs</h1> -->
     <div class="flex h-screen overflow-hidden">
       <div
@@ -21,21 +18,44 @@
       >
         <div class="">
           <h1 class="text-4xl font-bold">Orgzit</h1>
-          <div class="mt-12">
-            <div class="logged-in-sidebar">
-              <h1 class="font-light text-sm text-gray-500">Welcome,</h1>
-              <h1 class="text-lg font-bold" id="username"></h1>
-            </div>
-            <div class="login-sidebar"></div>
-          </div>
+          <div class="mt-12" id="sidebar-header"></div>
         </div>
         <div class="flex-1 mt-12">
-          <div id="task-button"></div>
-          <div id="friends-button"></div>
-          <div id="chat-button"></div>
+          <div id="task-button">
+            <div class="rounded-xl bg-orange-100 px-4 py-3 flex justify-between hover:shadow-lg">
+              <img src="./images/Tasks.png" width="24px" />
+                <h1 class="font-bold text-orange-600 flex-1 ml-3 cursor-pointer">
+                 Tasks
+                </h1>
+            </div>
+          </div>
+          <div id="friends-button">
+            <div class="rounded-xl bg-gray-100 px-4 py-3 flex justify-between mt-4 hover:shadow-lg">
+              <img src="./images/Friend.png" width="24px" />
+                <h1 class="font-bold text-gray-600 flex-1 ml-3 cursor-pointer">
+                  Friends
+                </h1>
+              <img src="./images/PlusGray.png" width="24px" class="cursor-pointer" />
+            </div>
+          </div>
+          <div id="chat-button">
+            <div class="rounded-xl bg-gray-100 px-4 py-3 flex justify-between mt-4 hover:shadow-lg">
+              <img src="./images/Chat Room.png" width="24px" />
+                <h1 class="font-bold text-gray-600 flex-1 ml-3 cursor-pointer">
+                  Chats
+                </h1>
+            </div>
+          </div>
         </div>
         <div>
-          <div id="assign-task-button"></div>
+          <div id="assign-task-button">
+            <div
+            class="bg-red-300 px-4 py-3 rounded-xl flex hover:bg-red-500 cursor-pointer items-center"
+          >
+            <img src="./images/Add New.png" />
+            <h1 class="text-white font-bold ml-3">Assign a task</h1>
+          </div>
+          </div>
         </div>
       </div>
       <div class="flex-1 bg-gray-200 flex" id="mainwrap-container"></div>
@@ -45,47 +65,21 @@
     <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.2/underscore-umd-min.js"></script>
     <script src="./js/vendor/backbone.js"></script>
 
-    <script type="text/template" id="username">
-      <% if(isLoggedIn()) { %>
-        <h1><%= username %></h1>
-        <% } else{%>
-          <button id="login-redirect" class="rounded-lg px-4 py-2 bg-red-500 text-white">Login</button>
-          <% } %>
+    <script type="text/template" id="username-template">
+      <% if(app.globals.is_authenticated){ %>
+        <div class="logged-in-sidebar">
+          <h1 class="font-light text-sm text-gray-500">Welcome,</h1>
+          <h1 class="text-lg font-bold" id="username"><%= username %></h1>
+        </div>
+      <% } 
+      else{ %>
+        <div class="login-sidebar">
+          <button id="login-redirect" class="rounded-lg px-4 py-2 bg-red-500 text-white z-10">Login</button>
+        </div>
+      <% } %>
+        
     </script>
 
-    <script type="text/template" id="sidebar-task-button">
-      <div class="rounded-xl bg-orange-100 px-4 py-3 flex justify-between hover:shadow-lg">
-        <img src="./images/Tasks.png" width="24px" />
-          <h1 class="font-bold text-orange-600 flex-1 ml-3 cursor-pointer">
-           Tasks
-          </h1>
-      </div>
-    </script>
-    <script type="text/template" id="sidebar-chat-button">
-      <div class="rounded-xl bg-gray-100 px-4 py-3 flex justify-between mt-4 hover:shadow-lg">
-        <img src="./images/Chat Room.png" width="24px" />
-          <h1 class="font-bold text-gray-600 flex-1 ml-3 cursor-pointer">
-            Chats
-          </h1>
-      </div>
-    </script>
-    <script type="text/template" id="sidebar-friend-button">
-      <div class="rounded-xl bg-gray-100 px-4 py-3 flex justify-between mt-4 hover:shadow-lg">
-        <img src="./images/Friend.png" width="24px" />
-          <h1 class="font-bold text-gray-600 flex-1 ml-3 cursor-pointer">
-            Friends
-          </h1>
-        <img src="./images/PlusGray.png" width="24px" class="cursor-pointer" />
-      </div>
-    </script>
-    <script type="text/template" id="sidebar-assign-task-button">
-          <div
-        class="bg-red-300 px-4 py-3 rounded-xl flex hover:bg-red-500 cursor-pointer items-center"
-      >
-        <img src="./images/Add New.png" />
-        <h1 class="text-white font-bold ml-3">Assign a task</h1>
-      </div>
-    </script>
 
     <script type="text/template" id="task-container-template">
       <div
@@ -179,17 +173,14 @@
     </script>
     <script type="text/template" id="login-view">
       <div
-        class="flex items-center justify-center z-10 "
+        class="flex items-center justify-center z-10 m-10 w-full bg-white border"
       >
-      <div class="bg-gray-700/30 h-screen w-screen overflow-hidden absolute top-0 left-0"></div>
-      <div class="bg-white px-10 py-8 z-10">
+      <div class=" px-10 py-8 z-10">
         <h1 class="text-3xl">Login</h1>
         <div class="mt-8">
-          <form id="login-form">
-            <input type="text" name="email" class="border outline-none px-2 py-3 rounded-md" placeholder="Email"/>
-            <input type="password"name="password" class="border outline-none px-2 py-3 mt-2 rounded-md"  placeholder="Password"/>
-            <input type="button"  class="p-3 bg-red-500 text-white font-bold mt-4 hover:bg-green-700 cursor-pointer" value="Submit"/>
-          </form>
+            <input type="text" name="email" class="border outline-none px-2 py-3 rounded-md" placeholder="Email" value="arya" />
+            <input type="password"name="password" class="border outline-none px-2 py-3 mt-2 rounded-md"  placeholder="Password" value="Anas@123"/>
+            <input type="button" id="login-submit" class="p-3 bg-red-500 text-white font-bold mt-4 hover:bg-green-700 cursor-pointer" value="Submit"/>
         </div>
       </div>
       </div>
@@ -199,11 +190,11 @@
     <script src="js/functions/fn.js"></script>
 
     <script src="js/models/login.js"></script>
-    <script src="js/models/sidebar.js"></script>
+    <!-- <script src="js/models/sidebar.js"></script> -->
     <script src="js/models/mainwrap.js"></script>
 
     <script src="js/views/login.js"></script>
-    <script src="js/views/sidebar.js"></script>
+    <!-- <script src="js/views/sidebar.js"></script> -->
     <script src="js/views/chats.js"></script>
     <script src="js/views/friends.js"></script>
     <script src="js/views/taskItem.js"></script>

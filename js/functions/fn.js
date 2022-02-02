@@ -11,3 +11,10 @@ app.fn.getUser = ()=>{
 app.fn.isLoggedIn=()=>{
   return is_authenticated?true:false
 }
+
+app.fn.redirectToHome=()=>{
+  console.log("REDIRECTING TO HOME")
+  app.router.MainRouter.navigate("tasks",{trigger:true})
+  x.render()
+}
+
