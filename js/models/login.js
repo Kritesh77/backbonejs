@@ -42,7 +42,7 @@ app.models.LoginModel = Backbone.Model.extend({
         app.globals.token = data.token;
         self.set("is_authenticated", true);
         self.set("username", app.globals.username);
-        this.set("token", app.globals.token);
+        self.set("token", app.globals.token);
         console.log("user logged in", data);
       })
       .catch((e) => console.log("LOGIN ERROR", e));

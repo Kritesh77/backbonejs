@@ -22,7 +22,7 @@ var Workspace = Backbone.Router.extend({
     if (!app.globals.is_authenticated) {
       new app.views.LoginView({
         el: $("#mainwrap-container"),
-        model: new app.models.LoginSignupModel(),
+        model: new app.models.LoginModel(),
       });
     } else {
       app.fn.redirectToHome();
@@ -33,7 +33,7 @@ var Workspace = Backbone.Router.extend({
     if (!app.globals.is_authenticated) {
       new app.views.LoginView({
         el: $("#mainwrap-container"),
-        model: new app.models.LoginSignupModel(),
+        model: new app.models.LoginModel(),
       });
     } else {
       app.fn.redirectToHome();
