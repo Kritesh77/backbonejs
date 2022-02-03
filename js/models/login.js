@@ -8,26 +8,10 @@ app.models.LoginModel = Backbone.Model.extend({
   },
   initialize: function () {
     console.log("login Model init is_authenticated:", this.get("token"));
-    this.render();
-  },
-  render: function () {
-    if (!this.get("is_authenticated")) {
-      console.log("not authenticated,calling login view");
-      new app.views.LoginView({
-        el: $("#login-container"),
-        model: this,
-      });
-    }
   },
 
   login: function (loginData) {
     const self = this;
-    // app.globals.token= "45b2ac2079778fd395fa8aa31ce0653b58d8a4f1",
-    // app.globals.username= "falak"
-    // app.globals.is_authenticated= true
-    // this.set("is_authenticated", true);
-    // this.set("username",  app.globals.username);
-    // this.set("token", app.globals.token);
     $.ajax({
       url: "http://127.0.0.1:8000/api/login/",
       type: "POST",

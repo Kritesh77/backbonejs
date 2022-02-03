@@ -9,7 +9,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    
     <!-- <h1 class="p-4">BackbokeJs</h1> -->
     <div class="flex h-screen overflow-hidden">
       <div
@@ -20,41 +19,56 @@
           <h1 class="text-4xl font-bold">Orgzit</h1>
           <div class="mt-12" id="sidebar-header"></div>
         </div>
-        <div class="flex-1 mt-12">
-          <div id="task-button">
-            <div class="rounded-xl bg-orange-100 px-4 py-3 flex justify-between hover:shadow-lg">
-              <img src="./images/Tasks.png" width="24px" />
-                <h1 class="font-bold text-orange-600 flex-1 ml-3 cursor-pointer">
-                 Tasks
+        <div
+          class="flex-1 mt-12 flex flex-col justify-between"
+          id="sidebar-buttons"
+        >
+          <div>
+            <div id="task-button">
+              <div
+                class="rounded-xl bg-orange-100 px-4 py-3 flex justify-between hover:shadow-lg"
+              >
+                <img src="./images/Tasks.png" width="24px" />
+                <h1
+                  class="font-bold text-orange-600 flex-1 ml-3 cursor-pointer"
+                >
+                  Tasks
                 </h1>
+              </div>
             </div>
-          </div>
-          <div id="friends-button">
-            <div class="rounded-xl bg-gray-100 px-4 py-3 flex justify-between mt-4 hover:shadow-lg">
-              <img src="./images/Friend.png" width="24px" />
+            <div id="friends-button">
+              <div
+                class="rounded-xl bg-gray-100 px-4 py-3 flex justify-between mt-4 hover:shadow-lg"
+              >
+                <img src="./images/Friend.png" width="24px" />
                 <h1 class="font-bold text-gray-600 flex-1 ml-3 cursor-pointer">
                   Friends
                 </h1>
-              <img src="./images/PlusGray.png" width="24px" class="cursor-pointer" />
+                <img
+                  src="./images/PlusGray.png"
+                  width="24px"
+                  class="cursor-pointer"
+                />
+              </div>
             </div>
-          </div>
-          <div id="chat-button">
-            <div class="rounded-xl bg-gray-100 px-4 py-3 flex justify-between mt-4 hover:shadow-lg">
-              <img src="./images/Chat Room.png" width="24px" />
+            <div id="chat-button">
+              <div
+                class="rounded-xl bg-gray-100 px-4 py-3 flex justify-between mt-4 hover:shadow-lg"
+              >
+                <img src="./images/Chat Room.png" width="24px" />
                 <h1 class="font-bold text-gray-600 flex-1 ml-3 cursor-pointer">
                   Chats
                 </h1>
+              </div>
             </div>
           </div>
-        </div>
-        <div>
           <div id="assign-task-button">
             <div
-            class="bg-red-300 px-4 py-3 rounded-xl flex hover:bg-red-500 cursor-pointer items-center"
-          >
-            <img src="./images/Add New.png" />
-            <h1 class="text-white font-bold ml-3">Assign a task</h1>
-          </div>
+              class="bg-red-300 px-4 py-3 rounded-xl flex hover:bg-red-500 cursor-pointer items-center"
+            >
+              <img src="./images/Add New.png" />
+              <h1 class="text-white font-bold ml-3">Assign a task</h1>
+            </div>
           </div>
         </div>
       </div>
@@ -71,20 +85,40 @@
           <h1 class="font-light text-sm text-gray-500">Welcome,</h1>
           <h1 class="text-lg font-bold" id="username"><%= username %></h1>
         </div>
-      <% } 
+      <% }
       else{ %>
         <div class="login-sidebar">
           <button id="login-redirect" class="rounded-lg px-4 py-2 bg-red-500 text-white z-10">Login</button>
         </div>
       <% } %>
-        
     </script>
 
+    <script type="text/template" id="assign-task-template">
+      <div class=" h-full flex-col flex w-full items-center justify-center">
+        <h1 class="text-2xl font-md my-4">Assign a new task</h1>
+        <div class="w-1/2 flex flex-col">
+          <h1 class="text-gray-500 mt-2">Assigned to</h1>
+          <input type="text" placeholder="Username" class="p-2 border mb-1 outline-none" id="assign-task-username">
+          <h1 class="text-gray-500 mt-2">Task title</h1>
+          <input type="text" placeholder="Title"class="p-2 border mb-1 outline-none"
+          id="assign-task-title">
+          <h1 class="text-gray-500 mt-2">Task Description</h1>
+          <input type="text" placeholder="Description"class="p-2 border mb-1 outline-none"
+          id="assign-task-description">
+          <h1 class="text-gray-500 mt-2">Priority</h1>
+          <select name="priority" class="p-2" id="assign-task-priority">
+            <option name="urgent" id="">Urgent</option>
+            <option name="moderate" id="">Moderate</option>
+            <option name="lazy" id="">Lazy</option>
+          </select>
+          <input type="button" value="Submit" id="submit-assign-new-task" class="w-full p-3 text-white bg-red-500 mt-2 hover:bg-green-600 cursor-pointer hover:rounded-lg">
+        </div>
+      </div>
+    </script>
 
     <script type="text/template" id="task-container-template">
       <div
         class="flex-1 bg-slate-100/70 px-8 py-6 flex flex-col h-full"
-
       >
         <div class="flex justify-between text-lg">
           <h1>&#8592; Chats</h1>
@@ -93,43 +127,73 @@
           </h1>
           <h1>Next week &#8594;</h1>
         </div>
-        <div class="flex-1 mt-16">
+        <div class="flex-1 mt-16  h-full ">
           <h1 class="text-2xl font-bold text-gray-800">Tasks</h1>
-         <div id="task-item-container"></div>
+         <div id="task-item-container" class="overflow-scroll h-screen mb-20"></div>
         </div>
       </div>
     </script>
     <script type="text/template" id="task-list-template">
       <div class="mb-4">
         <div class="flex justify-between items-center text-xs text-gray-600">
-          <h1>{data.dueDate}</h1>
+          <h1> <%= created_at %></h1>
           <div class="flex items-center">
             <h1>Assigned by </h1>
-            <img
+            <!-- <img
               src="./images/Ellipse 2.png"
               alt="user"
               width="24px"
               class="ml-2"
-            />
+            /> -->
+            <h1 class="text-black ml-1"><%= creator_username %></h1>
           </div>
         </div>
         <div class="flex rounded-lg bg-white overflow-hidden mt-1">
-          <div class="priority-red"></div>
+          <%  if(status != "Completed"){ %>
+            <% if(priority == "Urgent"){ %>
+              <div class="priority-red flex justify-center items-center text-red-700">
+                <%= status %>
+              </div>
+            <% } %>
+            <% if(priority == "Moderate"){ %>
+              <div class="priority-orange flex justify-center items-center text-orange-700">
+                <%= status %>
+              </div>
+            <% } %>
+
+            <% if(priority == "Lazy"){ %>
+              <div class="priority-yellow flex justify-center items-center text-orange-700">
+                <%= status %>
+              </div>
+            <% }} %>
+
+            <% if(status == "Completed"){ %>
+              <div class="priority-green flex justify-center items-center text-green-800">
+                <%= status %>
+              </div>
+            <% } %>
           <div class="flex-1 px-2 self-center">
             <div class="flex items-baseline">
-              <input type="checkbox" name="" id="" />
-              <h1 class=" ml-2">{data.title}</h1>
+            <% if(status == "Completed"){ %>
+              <input type="checkbox" name="" id="mark-todo-done" checked/>
+              <h1 class="ml-2 line-through opacity-50 ">
+                <%= title %>
+              </h1>
+              <%}%>
+            <% if(status != "Completed"){ %>
+              <input type="checkbox" name="" id="mark-todo-done" />
+              <h1 class="ml-2">
+                <%= title %>
+              </h1>
+              <% }%>
             </div>
             <div class="flex">
               <div class="flex text-red-500">
                 <div class="self-center mr-1">
                   <img src="./images/Tags.png" alt="" />
                 </div>
-
-                  <h1>x</h1>
                   <h1>y</h1>
                   <h1>z</h1>
-
               </div>
               <div class="flex text-gray-400 ml-4">
                 <div class="self-center mr-1">
@@ -152,7 +216,7 @@
 
     <script type="text/template" id="chat-container-template">
       <div
-        class="flex-1 bg-slate-100/70 px-8 py-6 flex flex-col h-full"
+        class="flex-1 bg-slate-100/70 px-8 py-6 flex flex-col h-full overflow-scroll"
       >
         <div class="flex-1 mt-16">
           <h1 class="text-2xl font-bold text-gray-800">Chat</h1>
@@ -186,11 +250,13 @@
       </div>
     </script>
     <script src="js/globals.js"></script>
-  
+
     <script src="js/functions/fn.js"></script>
 
     <script src="js/models/login.js"></script>
+    <script src="js/models/tasks.js"></script>
     <!-- <script src="js/models/sidebar.js"></script> -->
+    <script src="js/models/friendList.js"></script>
     <script src="js/models/mainwrap.js"></script>
 
     <script src="js/views/login.js"></script>
@@ -199,6 +265,10 @@
     <script src="js/views/friends.js"></script>
     <script src="js/views/taskItem.js"></script>
     <script src="js/views/tasks.js"></script>
+    <script src="js/views/assignNewTask.js"></script>
+
+    <script src="js/collections/friends.js"></script>
+    <script src="js/collections/tasks.js"></script>
 
     <script src="js/main.js"></script>
 
