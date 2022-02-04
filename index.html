@@ -241,11 +241,30 @@
       >
       <div class=" px-10 py-8 z-10">
         <h1 class="text-3xl">Login</h1>
-        <div class="mt-8">
+        <div class="mt-8 flex flex-col">
             <input type="text" name="email" class="border outline-none px-2 py-3 rounded-md" placeholder="Email" value="arya" />
             <input type="password"name="password" class="border outline-none px-2 py-3 mt-2 rounded-md"  placeholder="Password" value="Anas@123"/>
+            <h1 class="login-error-message text-red-500 mt-3"><%= errorMessage %></h1>
             <input type="button" id="login-submit" class="p-3 bg-red-500 text-white font-bold mt-4 hover:bg-green-700 cursor-pointer" value="Submit"/>
         </div>
+        <h1 class="py-2">Not a user?<span class="cursor-pointer text-red-500 underline ml-2" id="redirect-signup">Signup</span></h1>
+
+      </div>
+      </div>
+    </script>
+    <script type="text/template" id="signup-view">
+      <div
+        class="flex items-center justify-center z-10 m-10 w-full bg-white border"
+      >
+      <div class=" px-10 py-8 z-10">
+        <h1 class="text-3xl">Signup</h1>
+        <div class="mt-8 flex flex-col">
+            <input type="text" name="email" class="border outline-none px-2 py-3 rounded-md" placeholder="Email" value="arya" />
+            <input type="password"name="password" class="border outline-none px-2 py-3 mt-2 rounded-md"  placeholder="Password" value="Anas@123"/>
+            <h1 class="signup-error-message text-red-500 mt-3"><%= errorMessage %></h1>
+            <input type="button" id="signup-submit" class="p-3 bg-red-500 text-white font-bold mt-4 hover:bg-green-700 cursor-pointer" value="Submit"/>
+        </div>
+        <h1 class="py-2">Already a user?<span class=" cursor-pointer text-red-500 underline ml-2" id="redirect-login">Login</span></h1>
       </div>
       </div>
     </script>
@@ -260,6 +279,7 @@
     <script src="js/models/mainwrap.js"></script>
 
     <script src="js/views/login.js"></script>
+    <script src="js/views/signup.js"></script>
     <!-- <script src="js/views/sidebar.js"></script> -->
     <script src="js/views/chats.js"></script>
     <script src="js/views/friends.js"></script>

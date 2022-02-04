@@ -27,6 +27,6 @@ app.views.TaskItemView = Backbone.View.extend({
     return this;
   },
   markTodoDone: function () {
-    this.model.checkTodo();
+    this.model.toggleTodoStatus();
   },
 });

@@ -17,7 +17,10 @@ app.fn.redirectToHome = () => {
   app.router.MainRouter.navigate("tasks", { trigger: true });
   // x.render()
 };
-
+app.fn.redirect = (link) => {
+  console.log("REDIRECTING TO ", link);
+  app.router.MainRouter.navigate(link, { trigger: true });
+};
 app.fn.redirectToLogin = () => {
   console.log("REDIRECTING TO Login");
   app.router.MainRouter.navigate("login", { trigger: true });
@@ -110,3 +113,5 @@ app.fn.getNewTaskData = () => {
   };
   return data;
 };
+
+app.fn.setSignupError = (error) => {};

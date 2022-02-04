@@ -1,16 +1,15 @@
 var app = app || {};
 
-app.views.LoginView = Backbone.View.extend({
-  template: _.template($("#login-view").html()),
+app.views.SignupView = Backbone.View.extend({
+  template: _.template($("#signup-view").html()),
   events: {
-    "click #login-submit": "startLogin",
-    "click #redirect-signup": "redirectToSignup",
+    "click #signup-submit": "startSignup",
+    "click #redirect-login": "redirectToLogin",
   },
   initialize: function () {
     const self = this;
-    console.log("Login View Init");
+    console.log("Signup View Init");
     self.model.on("change:errorMessage", this.render, this);
-
     self.model.on("change", function () {
       if (
         self.model.get("is_authenticated") &&
@@ -19,7 +18,7 @@ app.views.LoginView = Backbone.View.extend({
       ) {
         console.log("is_authenticated CHANGES", self.model.get("token"));
         //redirect to home and rerender it
-        app.fn.redirectToHome();
+        app.fn.redirect("tasks");
       }
     });
     this.render();
@@ -28,20 +27,20 @@ app.views.LoginView = Backbone.View.extend({
     this.$el.html(this.template(this.model.toJSON()));
     return this;
   },
-  startLogin: function (e) {
+
+  startSignup: function (e) {
     e.preventDefault();
     e.stopPropagation();
     var email = this.$(':input[name="email"]').val();
     var pwd = this.$(':input[name="password"]').val();
-    var loginData = {
+    var signupData = {
       username: email,
       password: pwd,
     };
-    console.log("Login data -> ", loginData);
-    this.model.login(loginData);
+    console.log("Signup data -> ", signupData);
+    this.model.signup(signupData);
   },
-
-  redirectToSignup: function () {
-    app.fn.redirect("signup");
+  redirectToLogin: function () {
+    app.fn.redirect("login");
   },
 });

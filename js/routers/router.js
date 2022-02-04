@@ -32,7 +32,7 @@ var Workspace = Backbone.Router.extend({
   signup: function () {
     console.log("Routing to signup");
     if (!app.globals.is_authenticated) {
-      new app.views.LoginView({
+      new app.views.SignupView({
         el: $("#mainwrap-container"),
         model: new app.models.LoginModel(),
       });

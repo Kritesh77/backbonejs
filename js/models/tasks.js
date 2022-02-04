@@ -35,7 +35,7 @@ app.models.TaskModel = Backbone.Model.extend({
       console.log("Task add error");
     }
   },
-  checkTodo: function () {
+  toggleTodoStatus: function () {
     const id = this.get("id");
     if (this.get("status") == "Completed") {
       this.set("status", "Pending");
