@@ -1,7 +1,7 @@
 var app = app || {};
 
-app.views.TaskItemView = Backbone.View.extend({
-  template: _.template($("#task-list-template").html()),
+app.views.FriendsItemView = Backbone.View.extend({
+  template: _.template($("#").html()),
 
   initialize: function () {
     // console.log("Task list View Init", this);

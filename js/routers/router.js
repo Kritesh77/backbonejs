@@ -29,6 +29,7 @@ var Workspace = Backbone.Router.extend({
       app.fn.redirectToHome();
     }
   },
+
   signup: function () {
     console.log("Routing to signup");
     if (!app.globals.is_authenticated) {
@@ -40,28 +41,28 @@ var Workspace = Backbone.Router.extend({
       app.fn.redirectToHome();
     }
   },
+
   tasks: function () {
     //remmove the old view
     if (!app.globals.is_authenticated) {
       app.fn.redirectToLogin();
     } else {
       if (app?.globals?.username?.length) {
-        new app.globals.SidebarView({
-          el: $("#sidebar-header"),
-        });
+        app.fn.renderSidebar();
       }
       const taskList = app.fn.getTaskList();
 
       taskList.then((taskListData) => {
         console.log(taskListData);
-
+        //improve this function to only add models that are updated
+        //can be achieved by comparing previous task data to the new one
+        //or by comparing model data
         taskListData.forEach((data) => {
           //make a new model
           const newModel = new app.models.TaskModel(data);
           //push it in collections
           app.globals.TaskCollection.add(newModel);
         });
-        console.log(app.globals.TaskCollection);
         //render the view
         new app.views.TaskContainerView({
           el: $("#mainwrap-container"),
@@ -70,6 +71,7 @@ var Workspace = Backbone.Router.extend({
       });
     }
   },
+
   chat: function (id) {
     console.log(id);
     const x = new app.views.ChatContainerView({
@@ -77,21 +79,33 @@ var Workspace = Backbone.Router.extend({
       model: new app.models.MainwrapModel(),
     });
   },
+
   friends: function () {
     if (!app.globals.is_authenticated) {
       app.fn.redirectToLogin();
     } else {
       if (app?.globals?.username?.length) {
-        new app.globals.SidebarView({
-          el: $("#sidebar-header"),
-        });
+        app.fn.renderSidebar();
       }
-      const x = new app.views.FriendContainerView({
-        el: $("#mainwrap-container"),
-        model: new app.models.MainwrapModel(),
+      const friendList = app.fn.getTaskList();
+
+      friendList.then((friendListData) => {
+        console.log(friendListData);
+        friendListData.forEach((data) => {
+          //make a new model
+          const newModel = new app.models.FriendsModel(data);
+          //push it in collections
+          app.globals.FriendsCollection.add(newModel);
+        });
+        //render the view
+        new app.views.FriendContainerView({
+          el: $("#mainwrap-container"),
+          model: new app.models.FriendsModel(),
+        });
       });
     }
   },
+
   assignNewTask: function () {
     if (!app.globals.is_authenticated) {
       app.fn.redirectToLogin();

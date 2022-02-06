@@ -19,7 +19,7 @@ app.views.LoginView = Backbone.View.extend({
       ) {
         console.log("is_authenticated CHANGES", self.model.get("token"));
         //redirect to home and rerender it
-        app.fn.redirectToHome();
+        app.fn.redirect("tasks");
       }
     });
     this.render();

@@ -26,7 +26,7 @@ app.views.AssignNewTaskView = Backbone.View.extend({
     var description = this.$("#assign-task-description").val();
     var priority = this.$("#assign-task-priority option:selected").text();
     var taskData = {
-      assigned_to: { id: 0, username: assigned_to },
+      assigned_to,
       title,
       description,
       priority,

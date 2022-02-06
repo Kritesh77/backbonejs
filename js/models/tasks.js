@@ -24,12 +24,12 @@ app.models.TaskModel = Backbone.Model.extend({
       );
     });
   },
-  addTask: function (taskData) {
+  addTask: async function (taskData) {
     //update the database for this task and then create a new model;
     //push it in the collections on change
-    if (app.fn.addNewTask(taskData)) {
-      //data inserted
-      console.log("THISMODEL", this.model);
+    const addTaskReq = await app.fn.addNewTask(taskData);
+    if (addTaskReq.status === 201) {
+      alert("Task assigned");
       app.router.MainRouter.navigate("tasks", { trigger: true });
     } else {
       console.log("Task add error");
@@ -40,19 +40,19 @@ app.models.TaskModel = Backbone.Model.extend({
     if (this.get("status") == "Completed") {
       this.set("status", "Pending");
 
-      app.fn.updateTaskStatus(id, "Pending").then((res) => {
-        if (res) {
-          this.set("status", "Pending");
-        }
-      });
+      // app.fn.updateTaskStatus(id, "Pending").then((res) => {
+      //   if (res.status !== 400) {
+      //     this.set("status", "Pending");
+      //   }
+      // });
     } else if (this.get("status") !== "Completed") {
       this.set("status", "Completed");
 
-      app.fn.updateTaskStatus(id, "Completed").then((res) => {
-        if (res) {
-          this.set("status", "Completed");
-        }
-      });
+      // app.fn.updateTaskStatus(id, "Completed").then((res) => {
+      //   if (res !== 400) {
+      //     this.set("status", "Completed");
+      //   }
+      // });
     }
   },
 });

@@ -97,15 +97,15 @@
       <div class=" h-full flex-col flex w-full items-center justify-center">
         <h1 class="text-2xl font-md my-4">Assign a new task</h1>
         <div class="w-1/2 flex flex-col">
-          <h1 class="text-gray-500 mt-2">Assigned to</h1>
+          <h1 class="text-gray-500 mt-2">Assign to</h1>
           <input type="text" placeholder="Username" class="p-2 border mb-1 outline-none" id="assign-task-username">
           <h1 class="text-gray-500 mt-2">Task title</h1>
           <input type="text" placeholder="Title"class="p-2 border mb-1 outline-none"
           id="assign-task-title">
-          <h1 class="text-gray-500 mt-2">Task Description</h1>
+          <h1 class="text-gray-500 mt-2">Task description</h1>
           <input type="text" placeholder="Description"class="p-2 border mb-1 outline-none"
           id="assign-task-description">
-          <h1 class="text-gray-500 mt-2">Priority</h1>
+          <h1 class="text-gray-500 mt-2">Task priority</h1>
           <select name="priority" class="p-2" id="assign-task-priority">
             <option name="urgent" id="">Urgent</option>
             <option name="moderate" id="">Moderate</option>
@@ -148,7 +148,7 @@
             <h1 class="text-black ml-1"><%= creator_username %></h1>
           </div>
         </div>
-        <div class="flex rounded-lg bg-white overflow-hidden mt-1">
+        <div class="flex rounded-lg bg-white overflow-hidden mt-1 hover:shadow-lg ">
           <%  if(status != "Completed"){ %>
             <% if(priority == "Urgent"){ %>
               <div class="priority-red flex justify-center items-center text-red-700">
@@ -200,7 +200,7 @@
                   <img src="./images/Link.png" alt="" />
                 </div>
 
-                  <a href="www.orgzit.com" key={i}>
+                  <a href="www.orgzit.com" target="_blank">
                     www.orgzit.com
                   </a>
 
@@ -213,7 +213,6 @@
         </div>
       </div>
     </script>
-
     <script type="text/template" id="chat-container-template">
       <div
         class="flex-1 bg-slate-100/70 px-8 py-6 flex flex-col h-full overflow-scroll"
@@ -229,9 +228,82 @@
         class="flex-1 bg-slate-100/70 px-8 py-6 flex flex-col h-full"
 
       >
-        <div class="flex-1 mt-16">
+        <div class="mt-16">
           <h1 class="text-2xl font-bold text-gray-800">Friends</h1>
-         <div id="friend-item-container"></div>
+          <div id="add-new-friend" class="flex flex-1 my-4">
+            <input type="text" class="px-4 py-3 w-full rounded-lg rounded-r border-2 border-orange-200 outline-none" placeholder="Add a new friend">
+            <input type="button" value="Send request" class="bg-orange-200 px-4 hover:bg-red-200 cursor-pointer">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 text-center gap-4">
+          <div class="bg-white flex flex-col rounded-lg shadow-lg shadow-gray-200 border border-red-100 hover:shadow-sm">
+            <h1 class="text-xl p-4">New requests</h1>
+            <div id=""></div>
+          </div>
+          <div class="bg-white flex flex-col rounded-lg shadow-lg shadow-gray-200 border border-red-100 hover:shadow-sm">
+            <h1 class="text-xl p-4">Accepted requests</h1>
+          </div>
+        </div>
+      </div>
+    </script>
+    <script type="text/template" id="friends-list-template">
+      <div class="mb-4">
+        <div class="flex justify-between items-center text-xs text-gray-600">
+          <!-- <h1> <%= created_at %></h1> -->
+          <div class="flex items-center">
+            <h1>Reqested on <%= created_at %></h1>
+            <!-- <img
+              src="./images/Ellipse 2.png"
+              alt="user"
+              width="24px"
+              class="ml-2"
+            /> -->
+            <h1 class="text-black ml-1"><%= creator_username %></h1>
+          </div>
+        </div>
+        <div class="flex rounded-lg bg-white overflow-hidden mt-1 hover:shadow-lg ">
+          <%  if(status != "Accepted"){ %>
+              <div class="priority-green flex justify-center items-center text-orange-700">
+                <%= status %>
+              </div>
+            <% } %>
+
+            <% if(status == "Accepted"){ %>
+              <div class="priority-orange flex justify-center items-center text-green-800">
+                <%= status %>
+              </div>
+            <% } %>
+
+          <div class="flex-1 px-2 self-center">
+            <div class="flex items-baseline">
+              <input type="checkbox" name="" id="mark-todo-done" checked/>
+              <h1 class="ml-2 line-through opacity-50 ">
+                <%= username %>
+              </h1>
+              </div>
+            <div class="flex">
+              <div class="flex text-red-500">
+                <div class="self-center mr-1">
+                  <img src="./images/Tags.png" alt="" />
+                </div>
+                  <h1>y</h1>
+                  <h1>z</h1>
+              </div>
+              <div class="flex text-gray-400 ml-4">
+                <div class="self-center mr-1">
+                  <img src="./images/Link.png" alt="" />
+                </div>
+
+                  <a href="www.orgzit.com" target="_blank">
+                    www.orgzit.com
+                  </a>
+
+              </div>
+            </div>
+          </div>
+          <div class=" px-4 py-6 opacity-50 cursor-pointer">
+              <img src="./images/Chat Room.png" alt="" />
+          </div>
         </div>
       </div>
     </script>
@@ -268,6 +340,7 @@
       </div>
       </div>
     </script>
+
     <script src="js/globals.js"></script>
 
     <script src="js/functions/fn.js"></script>
@@ -275,7 +348,7 @@
     <script src="js/models/login.js"></script>
     <script src="js/models/tasks.js"></script>
     <!-- <script src="js/models/sidebar.js"></script> -->
-    <script src="js/models/friendList.js"></script>
+    <script src="js/models/friends.js"></script>
     <script src="js/models/mainwrap.js"></script>
 
     <script src="js/views/login.js"></script>

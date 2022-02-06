@@ -13,57 +13,39 @@ app.models.LoginModel = Backbone.Model.extend({
 
   login: function (loginData) {
     const self = this;
-    $.ajax({
-      url: "http://127.0.0.1:8000/api/login/",
-      type: "POST",
-      //   data: JSON.stringify(loginData),
-      data: JSON.stringify(loginData),
-      contentType: "application/json",
-      dataType: "json",
-    })
-      .then(function (data) {
+    app.fn.login(loginData).then(({ dataJson, status }) => {
+      console.log("STATUS", dataJson, status);
+      if (status === 200) {
         app.globals.is_authenticated = true;
-        app.globals.username = data.username;
-        app.globals.token = data.token;
+        app.globals.username = dataJson.username;
+        app.globals.token = dataJson.token;
         self.set("is_authenticated", true);
         self.set("username", app.globals.username);
         self.set("token", app.globals.token);
-        console.log("user logged in", data);
-      })
-      .catch((e) => {
-        self.set("errorMessage", e?.responseJSON?.error);
-
-        console.log("LOGIN ERROR", e);
-      });
+        console.log("user logged in", dataJson);
+      } else {
+        console.log("ERROR LOGIN", dataJson);
+        self.set("errorMessage", dataJson?.error);
+      }
+    });
   },
   signup: function (signupData) {
     const self = this;
-    $.ajax({
-      url: "http://127.0.0.1:8000/api/register/",
-      type: "POST",
-      //   data: JSON.stringify(loginData),
-      data: JSON.stringify(signupData),
-      contentType: "application/json",
-      dataType: "json",
-    })
-      .then(function (data) {
-        if (data.status === 200) {
-          app.globals.is_authenticated = true;
-          app.globals.username = data.username;
-          app.globals.token = data.token;
-          self.set("is_authenticated", true);
-          self.set("username", app.globals.username);
-          self.set("token", app.globals.token);
-        } else {
-          console.log("ERROR SIGNUP", data.error);
-        }
-        console.log("user logged in", data);
-      })
-      .catch((e) => {
-        // alert("SIGNUP error");
-        self.set("errorMessage", e?.responseJSON?.error);
-        console.log("SIGNUP ERROR", e?.responseJSON?.error);
-      });
+    app.fn.signup(signupData).then(({ dataJson, status }) => {
+      console.log("STATUS", dataJson, status);
+      if (status === 200) {
+        app.globals.is_authenticated = true;
+        app.globals.username = dataJson.username;
+        app.globals.token = dataJson.token;
+        self.set("is_authenticated", true);
+        self.set("username", app.globals.username);
+        self.set("token", app.globals.token);
+        console.log("user logged in", dataJson);
+      } else {
+        console.log("ERROR SIGNUP", dataJson);
+        self.set("errorMessage", dataJson?.error);
+      }
+    });
   },
   getUser: function () {
     return {

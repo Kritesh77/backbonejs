@@ -1,6 +1,6 @@
 var app = app || {};
 
-app.models.friendListModel = Backbone.Model.extend({
+app.models.FriendsModel = Backbone.Model.extend({
   defaults: {
     sender: "",
     reciever: "",

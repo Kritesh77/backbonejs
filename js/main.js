@@ -5,7 +5,7 @@ $(document).ready(function () {
   app.globals.token = "";
 
   //testing
-  // app.globals.token = "f2801a4ace14460d28a15984715e2c0b56b473ad";
+  // app.globals.token = "a9401c05abeeb981c697f2e72bed3351024d2526";
   // app.globals.username = "k";
   // app.globals.is_authenticated = true;
 
@@ -71,8 +71,11 @@ $(document).ready(function () {
   app.globals.TaskCollection = new app.collections.TasksCollection({
     model: app.models.TaskModel,
   });
-
   app.globals.TaskCollection.pop();
+
+  app.globals.FriendsCollection = new app.collections.FriendsCollection({
+    model: app.models.Friends,
+  });
 
   // console.log("XEL", x.el, app.globals.username);
 });
