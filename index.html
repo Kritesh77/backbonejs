@@ -62,9 +62,10 @@
               </div>
             </div>
           </div>
-          <div id="assign-task-button">
+          <div class="">
             <div
               class="bg-red-300 px-4 py-3 rounded-xl flex hover:bg-red-500 cursor-pointer items-center"
+              id="assign-task-button"
             >
               <img src="./images/Add New.png" />
               <h1 class="text-white font-bold ml-3">Assign a task</h1>
@@ -81,10 +82,16 @@
 
     <script type="text/template" id="username-template">
       <% if(app.globals.is_authenticated){ %>
-        <div class="logged-in-sidebar">
-          <h1 class="font-light text-sm text-gray-500">Welcome,</h1>
-          <h1 class="text-lg font-bold" id="username"><%= username %></h1>
+        <div class="flex justify-between items-center">
+          <div class="logged-in-sidebar">
+            <h1 class="font-light text-sm text-gray-500">Welcome,</h1>
+            <h1 class="text-lg font-bold" id="username"><%= username %></h1>
+          </div>
+          <div class="cursor-pointer p-1 rounded-sm hover:rounded-md hover:bg-gray-200" >
+            <img id="logout-button" src="https://img.icons8.com/external-kmg-design-detailed-outline-kmg-design/24/000000/external-logout-real-estate-kmg-design-detailed-outline-kmg-design.png"/>
+          </div>
         </div>
+
       <% }
       else{ %>
         <div class="login-sidebar">
@@ -98,12 +105,14 @@
         <h1 class="text-2xl font-md my-4">Assign a new task</h1>
         <div class="w-1/2 flex flex-col">
           <h1 class="text-gray-500 mt-2">Assign to</h1>
-          <input type="text" placeholder="Username" class="p-2 border mb-1 outline-none" id="assign-task-username">
+          <input type="text" autocomplete="off" placeholder="Username" class="p-2 border mb-1 outline-none" id="assign-task-username" list="friends">
+          <datalist id="friends">
+          </datalist>
           <h1 class="text-gray-500 mt-2">Task title</h1>
-          <input type="text" placeholder="Title"class="p-2 border mb-1 outline-none"
+          <input type="text" autocomplete="off" placeholder="Title"class="p-2 border mb-1 outline-none"
           id="assign-task-title">
           <h1 class="text-gray-500 mt-2">Task description</h1>
-          <input type="text" placeholder="Description"class="p-2 border mb-1 outline-none"
+          <input type="text" autocomplete="off" placeholder="Description"class="p-2 border mb-1 outline-none"
           id="assign-task-description">
           <h1 class="text-gray-500 mt-2">Task priority</h1>
           <select name="priority" class="p-2" id="assign-task-priority">
@@ -120,74 +129,82 @@
       <div
         class="flex-1 bg-slate-100/70 px-8 py-6 flex flex-col h-full"
       >
-        <div class="flex justify-between text-lg">
+        <div class="flex justify-between text-lg items-center">
           <h1>&#8592; Chats</h1>
           <h1 class="text-xl font-bold underline text-orange-500 ">
             Today
           </h1>
-          <h1>Next week &#8594;</h1>
+          <h1 id="logout-button" class="text-red-500 text-xs cursor-pointer hover:underline">Logout</h1>
         </div>
-        <div class="flex-1 mt-16  h-full ">
-          <h1 class="text-2xl font-bold text-gray-800">Tasks</h1>
-         <div id="task-item-container" class="overflow-scroll h-screen mb-20"></div>
+        <div class="flex-1 mt-16 overflow-y-scroll">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">My Pending Tasks</h1>
+            <div id="task-item-container" class="overflow-y-scroll mb-8"></div>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">My Completed Tasks</h1>
+            <div id="completed-task-item-container" class="overflow-y-scroll mb-8"></div>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Assigned by me</h1>
+            <div id="assigned-task-item-container" class="overflow-y-scroll mb-8"></div>
+          </div>
         </div>
       </div>
     </script>
     <script type="text/template" id="task-list-template">
       <div class="mb-4">
-        <div class="flex justify-between items-center text-xs text-gray-600">
-          <h1> <%= created_at %></h1>
+        <div class="flex justify-between items-center text-xs text-gray-600 ">
+          <h1>Assigned on <%= created_at %></h1>
+          <%  if(status){ %>
+            <h1>Updated on <%= updated_at %></h1>
+          <% } %>
+
           <div class="flex items-center">
             <h1>Assigned by </h1>
-            <!-- <img
-              src="./images/Ellipse 2.png"
-              alt="user"
-              width="24px"
-              class="ml-2"
-            /> -->
             <h1 class="text-black ml-1"><%= creator_username %></h1>
           </div>
         </div>
         <div class="flex rounded-lg bg-white overflow-hidden mt-1 hover:shadow-lg ">
-          <%  if(status != "Completed"){ %>
+          <%  if(!status){ %>
             <% if(priority == "Urgent"){ %>
               <div class="priority-red flex justify-center items-center text-red-700">
-                <%= status %>
+                Pending
               </div>
             <% } %>
             <% if(priority == "Moderate"){ %>
               <div class="priority-orange flex justify-center items-center text-orange-700">
-                <%= status %>
+                Pending
               </div>
             <% } %>
 
             <% if(priority == "Lazy"){ %>
               <div class="priority-yellow flex justify-center items-center text-orange-700">
-                <%= status %>
+                Pending
               </div>
             <% }} %>
 
-            <% if(status == "Completed"){ %>
+            <% if(status){ %>
               <div class="priority-green flex justify-center items-center text-green-800">
-                <%= status %>
+                Completed
               </div>
             <% } %>
-          <div class="flex-1 px-2 self-center">
+          <div class="flex-1 px-2 py-4">
             <div class="flex items-baseline">
-            <% if(status == "Completed"){ %>
+            <% if(status){ %>
               <input type="checkbox" name="" id="mark-todo-done" checked/>
               <h1 class="ml-2 line-through opacity-50 ">
                 <%= title %>
               </h1>
               <%}%>
-            <% if(status != "Completed"){ %>
+            <% if(!status){ %>
               <input type="checkbox" name="" id="mark-todo-done" />
               <h1 class="ml-2">
                 <%= title %>
               </h1>
               <% }%>
             </div>
-            <div class="flex">
+            <div class="flex mt-1">
               <div class="flex text-red-500">
                 <div class="self-center mr-1">
                   <img src="./images/Tags.png" alt="" />
@@ -207,8 +224,70 @@
               </div>
             </div>
           </div>
-          <div class=" px-4 py-6 opacity-50 cursor-pointer">
+          <div class="opacity-50 cursor-pointer h-5 w-5 self-center mr-8 hover:opacity-100">
+            <img src="./images/Chat Room.png" alt="" />
+          </div>
+          <div class="opacity-50 cursor-pointer h-5 w-5 self-center mr-8 hover:opacity-100" id="delete-todo-task">
+            <img src="https://img.icons8.com/ios/50/FF0000/delete--v1.png"/>
+          </div>
+        </div>
+      </div>
+    </script>
+    <script type="text/template" id="assigned-to-task-list-template">
+      <div class="mb-4">
+        <div class="flex justify-between items-center text-xs text-gray-600 ">
+          <h1>Assigned on <%= created_at %></h1>
+          <h1>Updated on <%= updated_at %></h1>
+
+          <div class="flex items-center">
+            <h1>Assigned to </h1>
+            <h1 class="text-black ml-1"><%= assigned_to %></h1>
+          </div>
+
+        </div>
+        <div class="flex rounded-lg bg-white overflow-hidden mt-1 hover:shadow-lg ">
+          <%  if(!status){ %>
+            <% if(priority == "Urgent"){ %>
+              <div class="priority-red flex justify-center items-center text-red-700">
+                Pending
+              </div>
+            <% } %>
+            <% if(priority == "Moderate"){ %>
+              <div class="priority-orange flex justify-center items-center text-orange-700">
+                Pending
+              </div>
+            <% } %>
+
+            <% if(priority == "Lazy"){ %>
+              <div class="priority-yellow flex justify-center items-center text-orange-700">
+                Pending
+              </div>
+            <% }} %>
+
+            <% if(status){ %>
+              <div class="priority-green flex justify-center items-center text-green-800">
+                Completed
+              </div>
+            <% } %>
+          <div class="flex-1 px-2 py-4">
+            <div class="flex items-baseline">
+            <% if(status){ %>
+              <h1 class="ml-2 line-through opacity-50 ">
+                <%= title %>
+              </h1>
+              <%}%>
+            <% if(!status){ %>
+              <h1 class="ml-2">
+                <%= title %>
+              </h1>
+              <% }%>
+            </div>
+          </div>
+          <div class="opacity-50 cursor-pointer h-5 w-5 self-center mr-8 hover:opacity-100">
               <img src="./images/Chat Room.png" alt="" />
+          </div>
+          <div class="opacity-50 cursor-pointer h-5 w-5 self-center mr-8 hover:opacity-100" id="delete-todo-task">
+            <img src="https://img.icons8.com/ios/50/FF0000/delete--v1.png"/>
           </div>
         </div>
       </div>
@@ -230,81 +309,73 @@
       >
         <div class="mt-16">
           <h1 class="text-2xl font-bold text-gray-800">Friends</h1>
-          <div id="add-new-friend" class="flex flex-1 my-4">
-            <input type="text" class="px-4 py-3 w-full rounded-lg rounded-r border-2 border-orange-200 outline-none" placeholder="Add a new friend">
-            <input type="button" value="Send request" class="bg-orange-200 px-4 hover:bg-red-200 cursor-pointer">
+          <div id="add-new-friend" class="flex flex-1 mt-4">
+            <input type="text" class="px-4 py-3 w-full rounded-lg rounded-r border-2 border-orange-200 outline-none" placeholder="Add a new friend" id="add-friend-input">
+            <input type="button" value="Send request" class="rounded-r-lg  bg-orange-200 px-4 hover:bg-red-200 cursor-pointer" id="submit-friend-request">
           </div>
-        </div>
-        <div class="grid grid-cols-2 text-center gap-4">
-          <div class="bg-white flex flex-col rounded-lg shadow-lg shadow-gray-200 border border-red-100 hover:shadow-sm">
-            <h1 class="text-xl p-4">New requests</h1>
-            <div id=""></div>
+          <h1 class="friend-error-message text-red-500 mb-3"><%= errorMessage %></h1>
           </div>
-          <div class="bg-white flex flex-col rounded-lg shadow-lg shadow-gray-200 border border-red-100 hover:shadow-sm">
-            <h1 class="text-xl p-4">Accepted requests</h1>
+        <div class="overflow-y-scroll text-center">
+          <div class="bg-white flex flex-col rounded-lg shadow-lg shadow-gray-200 border border-red-300 hover:shadow-sm my-4 px-4">
+            <h1 class="text-xl p-4 border-b border-red-100">New requests</h1>
+            <div id="new-friend-item-list"></div>
+          </div>
+          <div class="bg-white flex flex-col rounded-lg shadow-lg shadow-gray-200 border border-green-300 hover:shadow-sm my-4 px-4">
+            <h1 class="text-xl p-4 border-b border-green-100">Accepted requests</h1>
+            <div id="accepted-friend-item-list"></div>
+          </div>
+          <div class="bg-white flex flex-col rounded-lg shadow-lg shadow-gray-200 border border-orange-300 hover:shadow-sm my-4 px-4">
+            <h1 class="text-xl p-4 border-b border-orange-100">Sent requests</h1>
+            <div id="sent-friend-item-list"></div>
           </div>
         </div>
       </div>
     </script>
-    <script type="text/template" id="friends-list-template">
-      <div class="mb-4">
-        <div class="flex justify-between items-center text-xs text-gray-600">
-          <!-- <h1> <%= created_at %></h1> -->
-          <div class="flex items-center">
-            <h1>Reqested on <%= created_at %></h1>
-            <!-- <img
-              src="./images/Ellipse 2.png"
-              alt="user"
-              width="24px"
-              class="ml-2"
-            /> -->
-            <h1 class="text-black ml-1"><%= creator_username %></h1>
+    <script type="text/template" id="friends-list-template-new">
+        <div class="flex justify-between items-center text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
+          <div>
+            <h1 class="text-lg uppercase font-bold">
+              ID:<%= req_id %> / <%= sender %>
+            </h1>
+            <h1 clas="underline">Recieved on <%= created_at %></h1>
           </div>
-        </div>
-        <div class="flex rounded-lg bg-white overflow-hidden mt-1 hover:shadow-lg ">
-          <%  if(status != "Accepted"){ %>
-              <div class="priority-green flex justify-center items-center text-orange-700">
-                <%= status %>
-              </div>
-            <% } %>
 
-            <% if(status == "Accepted"){ %>
-              <div class="priority-orange flex justify-center items-center text-green-800">
-                <%= status %>
-              </div>
-            <% } %>
-
-          <div class="flex-1 px-2 self-center">
-            <div class="flex items-baseline">
-              <input type="checkbox" name="" id="mark-todo-done" checked/>
-              <h1 class="ml-2 line-through opacity-50 ">
-                <%= username %>
-              </h1>
-              </div>
-            <div class="flex">
-              <div class="flex text-red-500">
-                <div class="self-center mr-1">
-                  <img src="./images/Tags.png" alt="" />
-                </div>
-                  <h1>y</h1>
-                  <h1>z</h1>
-              </div>
-              <div class="flex text-gray-400 ml-4">
-                <div class="self-center mr-1">
-                  <img src="./images/Link.png" alt="" />
-                </div>
-
-                  <a href="www.orgzit.com" target="_blank">
-                    www.orgzit.com
-                  </a>
-
-              </div>
-            </div>
+          <div class="flex cursor-pointer">
+            <h1 class="text-green-600 px-2 py-1 hover:text-white hover:bg-green-600" id="accept-friend">Accept</h1>
+            <h1 class="text-red-600 px-2 py-1 hover:text-white hover:bg-red-600" id="reject-friend">Reject</h1>
           </div>
-          <div class=" px-4 py-6 opacity-50 cursor-pointer">
-              <img src="./images/Chat Room.png" alt="" />
+      </div>
+    </script>
+    <script type="text/template" id="friends-list-template-accepted">
+        <div class="flex justify-between items-center text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
+          <div>
+            <h1 class="text-lg uppercase font-bold">
+              ID:<%= req_id %> / <%= reciever %>
+            </h1>
+            <h1 clas="underline">Accepted on <%= updated_at %></h1>
           </div>
-        </div>
+          <div class="h-4 w-4 cursor-pointer" id="goto-chat-room">
+            <img src="./images/Chat Room.png" alt="chat">
+          </div>
+          <div class="flex cursor-pointer">
+            <h1 class="px-2 py-1 text-white bg-green-600">Accepted</h1>
+            <h1 class="text-red-600 px-2 py-1 hover:text-white hover:bg-red-600" id="reject-friend">Remove friend</h1>
+          </div>
+      </div>
+    </script>
+    <script type="text/template" id="friends-list-template-sent">
+        <div class="flex justify-between items-center text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
+          <div>
+            <h1 class="text-lg uppercase font-bold">
+              ID:<%= req_id %> / <%= reciever %>
+            </h1>
+            <h1 clas="underline">Sent on <%= created_at %></h1>
+          </div>
+
+          <div class="flex cursor-pointer">
+            <h1 class="px-2 py-1 text-white bg-orange-600" >Request Sent</h1>
+            <h1 class="text-red-600 px-2 py-1 hover:text-white hover:bg-red-600" id="reject-friend">Delete Request</h1>
+          </div>
       </div>
     </script>
     <script type="text/template" id="login-view">
@@ -314,8 +385,8 @@
       <div class=" px-10 py-8 z-10">
         <h1 class="text-3xl">Login</h1>
         <div class="mt-8 flex flex-col">
-            <input type="text" name="email" class="border outline-none px-2 py-3 rounded-md" placeholder="Email" value="arya" />
-            <input type="password"name="password" class="border outline-none px-2 py-3 mt-2 rounded-md"  placeholder="Password" value="Anas@123"/>
+            <input type="text" name="email" class="border outline-none px-2 py-3 rounded-md" placeholder="Email" value="k" />
+            <input type="password"name="password" class="border outline-none px-2 py-3 mt-2 rounded-md"  placeholder="Password" value="k"/>
             <h1 class="login-error-message text-red-500 mt-3"><%= errorMessage %></h1>
             <input type="button" id="login-submit" class="p-3 bg-red-500 text-white font-bold mt-4 hover:bg-green-700 cursor-pointer" value="Submit"/>
         </div>
@@ -355,6 +426,7 @@
     <script src="js/views/signup.js"></script>
     <!-- <script src="js/views/sidebar.js"></script> -->
     <script src="js/views/chats.js"></script>
+    <script src="js/views/friendsItem.js"></script>
     <script src="js/views/friends.js"></script>
     <script src="js/views/taskItem.js"></script>
     <script src="js/views/tasks.js"></script>

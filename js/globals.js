@@ -7,4 +7,9 @@ app.models = app.models || {};
 app.fn = app.fn || {};
 app.collections = app.collections || {};
 
+app.globals.headers = {
+  "Content-Type": "application/json",
+  Authorization: `ApiKey ${app.globals.username}:${app.globals.token}`,
+};
+
 // app.globals.is_authenticated = false;

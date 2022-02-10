@@ -7,7 +7,7 @@ app.views.AssignNewTaskView = Backbone.View.extend({
   },
   initialize: function () {
     const self = this;
-    console.log("Login View Init");
+    console.log("AssignNewTaskView View Init");
     this.model.on("change", function () {
       //add model to collection
       app.globals.TaskCollection.add(self.model);
@@ -16,11 +16,10 @@ app.views.AssignNewTaskView = Backbone.View.extend({
   },
   render: function () {
     this.$el.html(this.template(this.model.toJSON()));
+    app.fn.addFriendSuggestions();
     return this;
   },
   assignTask: function (e) {
-    e.preventDefault();
-    e.stopPropagation();
     var assigned_to = this.$("#assign-task-username").val();
     var title = this.$("#assign-task-title").val();
     var description = this.$("#assign-task-description").val();

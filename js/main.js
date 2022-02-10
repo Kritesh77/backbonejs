@@ -1,14 +1,17 @@
 var app = app || {};
 $(document).ready(function () {
-  app.globals.username = "";
-  app.globals.is_authenticated = false;
-  app.globals.token = "";
-
   //testing
-  // app.globals.token = "a9401c05abeeb981c697f2e72bed3351024d2526";
+  // app.globals.token = "5b055c9f52db485a2c0fdd67418a3dbbf19c4a4b";
   // app.globals.username = "k";
   // app.globals.is_authenticated = true;
-
+  app.globals.token = app.fn.getCookie("token") || "";
+  app.globals.username = app.fn.getCookie("username") || "";
+  app.globals.is_authenticated = app.fn.getCookie("is_authenticated") || "";
+  console.log(
+    app.globals.token,
+    app.globals.username,
+    app.globals.is_authenticated
+  );
   const data = {
     username: "arya",
     password: "Anas@123",
@@ -19,13 +22,30 @@ $(document).ready(function () {
     attributes: {
       username: app.globals.username || "Krtiehs",
     },
-    template: _.template($("#username-template").html()),
+    template_username: _.template($("#username-template").html()),
     events: {
       "click #login-redirect": "goToLoginPage",
+      "click #logout-button": "logout",
     },
     goToLoginPage: function () {
       console.log("redirect to login page");
       app.router.MainRouter.navigate("/login", { trigger: true });
+    },
+    logout: function () {
+      if (
+        app.fn.getCookie("username") &&
+        app.fn.getCookie("is_authenticated") &&
+        app.fn.getCookie("token")
+      ) {
+        app.fn.setCookie("token", "");
+        app.fn.setCookie("username", "");
+        app.fn.setCookie("is_authenticated", "");
+        app.globals.username = "";
+        app.globals.is_authenticated = "";
+        app.globals.token = "";
+        app.router.MainRouter.navigate("chat", { trigger: true });
+        location.reload();
+      }
     },
     initialize: function () {
       console.log("sidebar view init", this);
@@ -33,9 +53,9 @@ $(document).ready(function () {
     },
     render: function () {
       this.$el.html(
-        this.template({ username: app.globals.username || "Krtiehs" })
+        this.template_username({ username: app.globals.username || "Krtiehs" })
       );
-      return self;
+      return this;
     },
   });
 
@@ -60,7 +80,7 @@ $(document).ready(function () {
     },
   });
 
-  var x = new app.globals.SidebarView({
+  new app.globals.SidebarView({
     el: $("#sidebar-header"),
   });
 
@@ -68,14 +88,9 @@ $(document).ready(function () {
     el: $("#sidebar-buttons"),
   });
 
-  app.globals.TaskCollection = new app.collections.TasksCollection({
-    model: app.models.TaskModel,
-  });
-  app.globals.TaskCollection.pop();
+  app.globals.TaskCollection = new app.collections.TasksCollection();
 
-  app.globals.FriendsCollection = new app.collections.FriendsCollection({
-    model: app.models.Friends,
-  });
+  app.globals.FriendsCollection = new app.collections.FriendsCollection();
 
   // console.log("XEL", x.el, app.globals.username);
 });

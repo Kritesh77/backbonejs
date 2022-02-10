@@ -9,7 +9,7 @@ app.models.TaskModel = Backbone.Model.extend({
     id: Math.round(Math.random() * 10),
     priority: "",
     resource_uri: "",
-    status: "pending",
+    status: false,
     title: "",
     updated_at: "",
   },
@@ -37,22 +37,22 @@ app.models.TaskModel = Backbone.Model.extend({
   },
   toggleTodoStatus: function () {
     const id = this.get("id");
-    if (this.get("status") == "Completed") {
-      this.set("status", "Pending");
-
-      // app.fn.updateTaskStatus(id, "Pending").then((res) => {
-      //   if (res.status !== 400) {
-      //     this.set("status", "Pending");
-      //   }
-      // });
-    } else if (this.get("status") !== "Completed") {
-      this.set("status", "Completed");
-
-      // app.fn.updateTaskStatus(id, "Completed").then((res) => {
-      //   if (res !== 400) {
-      //     this.set("status", "Completed");
-      //   }
-      // });
-    }
+    const currentStatus = this.get("status");
+    const assigned_to = this.get("assigned_to");
+    app.fn.updateTaskStatus(id, !currentStatus, assigned_to).then((res) => {
+      if (res.status !== 400) {
+        this.set("status", !currentStatus);
+      }
+    });
+  },
+  deleteTodoTask: function () {
+    const id = this.get("id");
+    app.fn.deleteTask(id).then((res) => {
+      console.log(res);
+      if (res.status === 204) {
+        //task deleted
+        app.globals.TaskCollection.remove(this);
+      }
+    });
   },
 });
